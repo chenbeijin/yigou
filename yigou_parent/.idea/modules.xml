@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/yigou_common/yigou_common.iml" filepath="$PROJECT_DIR$/yigou_common/yigou_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_common_service/yigou_common_service.iml" filepath="$PROJECT_DIR$/yigou_common_service/yigou_common_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_common_web/yigou_common_web.iml" filepath="$PROJECT_DIR$/yigou_common_web/yigou_common_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_interface/yigou_interface.iml" filepath="$PROJECT_DIR$/yigou_interface/yigou_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_parent.iml" filepath="$PROJECT_DIR$/yigou_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_pojo/yigou_pojo.iml" filepath="$PROJECT_DIR$/yigou_pojo/yigou_pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_service_business/yigou_service_business.iml" filepath="$PROJECT_DIR$/yigou_service_business/yigou_service_business.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_service_config/yigou_service_config.iml" filepath="$PROJECT_DIR$/yigou_service_config/yigou_service_config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_service_goods/yigou_service_goods.iml" filepath="$PROJECT_DIR$/yigou_service_goods/yigou_service_goods.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_service_order/yigou_service_order.iml" filepath="$PROJECT_DIR$/yigou_service_order/yigou_service_order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_service_system/yigou_service_system.iml" filepath="$PROJECT_DIR$/yigou_service_system/yigou_service_system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_service_user/yigou_service_user.iml" filepath="$PROJECT_DIR$/yigou_service_user/yigou_service_user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yigou_web_manager/yigou_web_manager.iml" filepath="$PROJECT_DIR$/yigou_web_manager/yigou_web_manager.iml" />
+    </modules>
+  </component>
+</project>

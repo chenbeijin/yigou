@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yigou_service_order:war">
+    <output-path>$PROJECT_DIR$/yigou_service_order/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>yigou_service_order</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="yigou_service_order-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="yigou_service_order:war exploded" />
+    </root>
+  </artifact>
+</component>

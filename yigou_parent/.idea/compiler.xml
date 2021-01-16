@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="yigou_common_service" />
+        <module name="yigou_service_business" />
+        <module name="yigou_service_config" />
+        <module name="yigou_common_web" />
+        <module name="yigou_common" />
+        <module name="yigou_service_goods" />
+        <module name="yigou_web_manager" />
+        <module name="yigou_interface" />
+        <module name="yigou_pojo" />
+        <module name="yigou_service_order" />
+        <module name="yigou_service_system" />
+        <module name="yigou_service_user" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="yigou_common" target="1.8" />
+      <module name="yigou_common_service" target="1.8" />
+      <module name="yigou_common_web" target="1.8" />
+      <module name="yigou_interface" target="1.8" />
+      <module name="yigou_parent" target="1.8" />
+      <module name="yigou_pojo" target="1.8" />
+      <module name="yigou_service_business" target="1.8" />
+      <module name="yigou_service_config" target="1.8" />
+      <module name="yigou_service_goods" target="1.8" />
+      <module name="yigou_service_order" target="1.8" />
+      <module name="yigou_service_system" target="1.8" />
+      <module name="yigou_service_user" target="1.8" />
+      <module name="yigou_web_manager" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
