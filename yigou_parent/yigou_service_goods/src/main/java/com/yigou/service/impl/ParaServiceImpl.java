@@ -4,20 +4,27 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yigou.dao.ParaMapper;
+import com.yigou.dao.TemplateMapper;
 import com.yigou.entity.PageResult;
 import com.yigou.pojo.goods.Para;
+import com.yigou.pojo.goods.Template;
 import com.yigou.service.goods.ParaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(interfaceClass = ParaService.class)
 public class ParaServiceImpl implements ParaService {
 
     @Autowired
     private ParaMapper paraMapper;
+
+    @Autowired
+    private TemplateMapper templateMapper;
 
     /**
      * 返回全部记录
@@ -82,8 +89,10 @@ public class ParaServiceImpl implements ParaService {
      *
      * @param para
      */
+    @Transactional
     public void add(Para para) {
         paraMapper.insert(para);
+        updateTemplateParaNumByPara(para);
     }
 
     /**
@@ -100,8 +109,13 @@ public class ParaServiceImpl implements ParaService {
      *
      * @param id
      */
+    @Transactional
     public void delete(Integer id) {
+        // 根据参数id查询模板的id
+        Para para = paraMapper.selectByPrimaryKey(id);
         paraMapper.deleteByPrimaryKey(id);
+        // 更新模板参数的数量
+        updateTemplateParaNumByPara(para);
     }
 
     /**
@@ -138,6 +152,22 @@ public class ParaServiceImpl implements ParaService {
 
         }
         return example;
+    }
+
+    /**
+     * 更新模板参数的数量
+     *
+     * @param para
+     */
+    private void updateTemplateParaNumByPara(Para para) {
+        // 根据模板id查询多条规格
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("templateId", para.getTemplateId());
+        List<Para> paras = paraMapper.selectByExample(createExample(searchMap));
+        // 根据模板id查询模板 更新规格数量
+        Template template = templateMapper.selectByPrimaryKey(para.getTemplateId());
+        template.setParaNum(paras.size());
+        templateMapper.updateByPrimaryKey(template);
     }
 
 }

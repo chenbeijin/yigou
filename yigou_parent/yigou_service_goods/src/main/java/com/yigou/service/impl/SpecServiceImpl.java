@@ -4,20 +4,27 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yigou.dao.SpecMapper;
+import com.yigou.dao.TemplateMapper;
 import com.yigou.entity.PageResult;
 import com.yigou.pojo.goods.Spec;
+import com.yigou.pojo.goods.Template;
 import com.yigou.service.goods.SpecService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(interfaceClass = SpecService.class)
 public class SpecServiceImpl implements SpecService {
 
     @Autowired
     private SpecMapper specMapper;
+
+    @Autowired
+    private TemplateMapper templateMapper;
 
     /**
      * 返回全部记录
@@ -82,8 +89,12 @@ public class SpecServiceImpl implements SpecService {
      *
      * @param spec
      */
+    @Transactional
     public void add(Spec spec) {
+        // 添加规格
         specMapper.insert(spec);
+        // 更新模板
+        updateTemplateSpecNumBySpec(spec);
     }
 
     /**
@@ -100,8 +111,13 @@ public class SpecServiceImpl implements SpecService {
      *
      * @param id
      */
+    @Transactional
     public void delete(Integer id) {
+        Spec spec = specMapper.selectByPrimaryKey(id);
+        // 根据规格id 删除规格
         specMapper.deleteByPrimaryKey(id);
+        // 更新模板
+        updateTemplateSpecNumBySpec(spec);
     }
 
     /**
@@ -139,5 +155,22 @@ public class SpecServiceImpl implements SpecService {
         }
         return example;
     }
+
+    /**
+     * 更新模板规格的数量
+     *
+     * @param spec
+     */
+    private void updateTemplateSpecNumBySpec(Spec spec) {
+        // 根据模板id查询多条规格
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("templateId", spec.getTemplateId());
+        List<Spec> specs = specMapper.selectByExample(createExample(searchMap));
+        // 根据模板id查询模板 更新规格数量
+        Template template = templateMapper.selectByPrimaryKey(spec.getTemplateId());
+        template.setSpecNum(specs.size());
+        templateMapper.updateByPrimaryKey(template);
+    }
+
 
 }
