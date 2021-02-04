@@ -10,6 +10,7 @@ import com.yigou.service.goods.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -101,6 +102,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @param id
      */
     public void delete(Integer id) {
+        if (deleteCategoryFindParentId(id)) {
+            throw new RuntimeException("删除分类失败！该分类存在下级分类。");
+        }
         categoryMapper.deleteByPrimaryKey(id);
     }
 
@@ -150,6 +154,19 @@ public class CategoryServiceImpl implements CategoryService {
 
         }
         return example;
+    }
+
+    /**
+     * 删除时查询该分类是否和其他分类有关 有 则删除失败 抛出异常
+     *
+     * @param parentId
+     * @return
+     */
+    private boolean deleteCategoryFindParentId(Integer parentId) {
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("parentId", parentId);
+        List<Category> categories = categoryMapper.selectByExample(createExample(searchMap));
+        return categories.size() > 0;
     }
 
 }

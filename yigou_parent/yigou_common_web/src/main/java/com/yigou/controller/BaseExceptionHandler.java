@@ -19,5 +19,4 @@ public class BaseExceptionHandler {
         return new Result(1,e.getMessage());
     }
 
-
 }

@@ -3,21 +3,33 @@ package com.yigou.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.yigou.dao.ParaMapper;
+import com.yigou.dao.SpecMapper;
 import com.yigou.dao.TemplateMapper;
 import com.yigou.entity.PageResult;
+import com.yigou.pojo.goods.Para;
+import com.yigou.pojo.goods.Spec;
 import com.yigou.pojo.goods.Template;
 import com.yigou.service.goods.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(interfaceClass = TemplateService.class)
 public class TemplateServiceImpl implements TemplateService {
 
     @Autowired
     private TemplateMapper templateMapper;
+
+    @Autowired
+    private SpecMapper specMapper;
+
+    @Autowired
+    private ParaMapper paraMapper;
 
     /**
      * 返回全部记录
@@ -100,7 +112,11 @@ public class TemplateServiceImpl implements TemplateService {
      *
      * @param id
      */
+    @Transactional
     public void delete(Integer id) {
+        if (deleteTemplateFindSpecOrParaByTemplateId(id)) {
+            throw new RuntimeException("删除模板失败！请删除模板有关的详细和参数。");
+        }
         templateMapper.deleteByPrimaryKey(id);
     }
 
@@ -131,9 +147,35 @@ public class TemplateServiceImpl implements TemplateService {
             if (searchMap.get("paraNum") != null) {
                 criteria.andEqualTo("paraNum", searchMap.get("paraNum"));
             }
-
         }
         return example;
     }
 
+    /**
+     * 删除时判断该模板是否被信息和参数信息有关 有 则 删除失败抛出异常
+     *
+     * @param templateId
+     * @return
+     */
+    private boolean deleteTemplateFindSpecOrParaByTemplateId(Integer templateId) {
+        HashMap<String, Object> searchMap = new HashMap<>();
+        searchMap.put("templateId", templateId);
+        // 查询模板是否有详细和参数信息 有 则 删除失败
+        Example specExample = new Example(Spec.class);
+        Example.Criteria specCriteria = specExample.createCriteria();
+
+        Example paraExample = new Example(Para.class);
+        Example.Criteria paraCriteria = paraExample.createCriteria();
+
+        if (searchMap != null) {
+            if (searchMap.get("templateId") != null) {
+                specCriteria.andEqualTo("templateId", searchMap.get("templateId"));
+                paraCriteria.andEqualTo("templateId", searchMap.get("templateId"));
+            }
+        }
+
+        List<Spec> specs = specMapper.selectByExample(specExample);
+        List<Para> paras = paraMapper.selectByExample(paraExample);
+        return (specs.size() > 0 || paras.size() > 0);
+    }
 }

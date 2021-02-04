@@ -143,8 +143,9 @@
 						</el-table-column>
 					</el-table>
 					<div class="pagination-container">
-						<el-pagination class="pagiantion" @size-change="fetchData" @current-change="fetchData" :current-page.sync="currentPage"
-						 :page-sizes="[10, 20, 30, 40]" :page-size="size" layout="total, sizes, prev, pager, next, jumper" :total="total">
+						<el-pagination class="pagiantion" @size-change="handleSizeChange" @current-change="handleCurrentChange"
+						 :current-page.sync="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="size" layout="total, sizes, prev, pager, next, jumper"
+						 :total="total">
 						</el-pagination>
 					</div>
 					<div class="add-form">
@@ -287,7 +288,17 @@
 							this.fetchData(); //刷新列表
 						})
 					})
-				},
+				}, // 分页显示获取当前页显示多少条数据模块
+				handleSizeChange(val) {
+					// 设置当前页显示条数
+					if (val != null) {
+						this.size = val;
+					}
+					this.fetchData();
+				}, // 分页显示获取当前页模块
+				handleCurrentChange(val) {
+					this.fetchData();
+				}
 				/* ****图片上传相关代码  如页面有图片上传功能放开注释 **** 
             handleAvatarSuccess(res, file) {
                 this.imageUrl = file.response;
